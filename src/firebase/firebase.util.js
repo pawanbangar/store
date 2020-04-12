@@ -36,11 +36,41 @@ export const creteProfileDocument = async (userAuth,additionalData) =>{
     return userRef;
 //    console.log(snapshot);
 }
+
+export const addCollectionAndDocuments=(collectionKey,objectsToAdd)=>{
+    const collectionRef=firestore.collection(collectionKey);
+    console.log(collectionRef);
+    const batch=firestore.batch();
+    objectsToAdd.forEach(obj=>{
+        const newDocRef=collectionRef.doc();
+        batch.set(newDocRef,obj);
+    });
+    batch.commit();
+}
+
+export const convertCollectionsSnapshotToMap=(collections)=>{
+    const transFormedCollection=collections.docs.map(doc=>{
+        const {title,items}=doc.data();
+        
+        return {
+            routeName:encodeURI(title.toLowerCase()),
+            id:doc.id,
+            title,
+            items
+        }
+    // create object like hats:hatsCollection     
+    
+    });
+    return transFormedCollection.reduce((accumulator,collection)=>{
+        accumulator[collection.title.toLocaleLowerCase()]=collection;
+        return accumulator;
+    },{})
+}
+
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 export const auth=firebase.auth();
 export const firestore=firebase.firestore();
-
 const provider=new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({prompt:'select_account'});
 export const SignInWithGoogle=()=>auth.signInWithPopup(provider);

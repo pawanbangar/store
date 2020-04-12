@@ -8,9 +8,14 @@ export const selectCollections=createSelector(
 );
 export const selectCollectioForPreview=createSelector(
     [selectCollections],
-    collections=>Object.keys(collections).map(key=>collections[key])
+    collections=>collections?Object.keys(collections).map(key=>collections[key]):[]
 )
 export const SelectCollection=collectionUrlParam=>createSelector(
 [selectCollections],
-    collections=>collections[collectionUrlParam]
+    collections=>collections?collections[collectionUrlParam]:[]
 );
+
+export const selectIsCollectionFetching=createSelector(
+[selectShop],
+    shop=>shop.isFetching
+)
