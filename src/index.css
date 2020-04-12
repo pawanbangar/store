@@ -1,7 +1,6 @@
-body {
-  margin: 0;
-    font-family: 'Open Sans Condensed', sans-serif;
-padding: 10px;
+body{ margin: 0;
+  font-family: 'Open Sans Condensed', sans-serif;
+  padding: 10px;
 }
 
 code {
